@@ -34,54 +34,115 @@ USE SCHEMA ANALYTICS;
 -- =====================================================
 -- Cortex Search needs a text column to search on.
 -- We create a view that synthesizes rich descriptions from maintenance data.
+-- Uses CTEs for modularity, readability, and maintainability.
 -- Note: CDC columns are lowercase quoted, output columns are uppercase
 
 CREATE OR REPLACE VIEW MAINTENANCE_SEARCHABLE AS
+WITH 
+    -- CTE 1: Base maintenance requests with standardized column names
+    maintenance_base AS (
+        SELECT 
+            "request_id" AS request_id,
+            "light_id" AS light_id,
+            "reported_at" AS reported_at,
+            "resolved_at" AS resolved_at,
+            "issue_type" AS issue_type
+        FROM STREETLIGHTS_DEMO."streetlights"."maintenance_requests"
+    ),
+    
+    -- CTE 2: Street light details with parsed geography
+    light_details AS (
+        SELECT 
+            "light_id" AS light_id,
+            "neighborhood_id" AS neighborhood_id,
+            "status" AS status,
+            "wattage" AS wattage,
+            TRY_TO_GEOGRAPHY("location") AS geo_location,
+            ST_X(TRY_TO_GEOGRAPHY("location")) AS longitude,
+            ST_Y(TRY_TO_GEOGRAPHY("location")) AS latitude
+        FROM STREETLIGHTS_DEMO."streetlights"."street_lights"
+    ),
+    
+    -- CTE 3: Neighborhood details
+    neighborhood_details AS (
+        SELECT 
+            "neighborhood_id" AS neighborhood_id,
+            "name" AS name,
+            "population" AS population
+        FROM STREETLIGHTS_DEMO."streetlights"."neighborhoods"
+    ),
+    
+    -- CTE 4: Join all data sources
+    joined_data AS (
+        SELECT 
+            mb.request_id,
+            mb.light_id,
+            mb.reported_at,
+            mb.resolved_at,
+            mb.issue_type,
+            ld.status AS light_status,
+            ld.wattage,
+            ld.geo_location,
+            ld.longitude,
+            ld.latitude,
+            nd.name AS neighborhood_name,
+            nd.population AS neighborhood_population
+        FROM maintenance_base mb
+        LEFT JOIN light_details ld ON mb.light_id = ld.light_id
+        LEFT JOIN neighborhood_details nd ON ld.neighborhood_id = nd.neighborhood_id
+    )
+
+-- Final SELECT: Build computed columns from joined data
 SELECT 
-    mr."request_id" AS REQUEST_ID,
-    mr."light_id" AS LIGHT_ID,
-    mr."reported_at" AS REPORTED_AT,
-    mr."resolved_at" AS RESOLVED_AT,
-    mr."issue_type" AS ISSUE_TYPE,
+    request_id AS REQUEST_ID,
+    light_id AS LIGHT_ID,
+    reported_at AS REPORTED_AT,
+    resolved_at AS RESOLVED_AT,
+    issue_type AS ISSUE_TYPE,
     
     -- Synthesize a searchable description from available data
     CONCAT(
-        'Maintenance request for street light ', mr."light_id", '. ',
-        'Issue type: ', COALESCE(mr."issue_type", 'unknown'), '. ',
-        'Location: ', COALESCE(n."name", 'Unknown neighborhood'), '. ',
-        'Light status: ', COALESCE(sl."status", 'unknown'), '. ',
-        'Light wattage: ', COALESCE(CAST(sl."wattage" AS VARCHAR), 'unknown'), 'W. ',
-        'Reported on: ', TO_VARCHAR(mr."reported_at", 'YYYY-MM-DD HH24:MI'), '. ',
+        'Maintenance request for street light ', light_id, '. ',
+        'Issue type: ', COALESCE(issue_type, 'unknown'), '. ',
+        'Location: ', COALESCE(neighborhood_name, 'Unknown neighborhood'), '. ',
+        'Light status: ', COALESCE(light_status, 'unknown'), '. ',
+        'Light wattage: ', COALESCE(CAST(wattage AS VARCHAR), 'unknown'), 'W. ',
+        'Reported on: ', TO_VARCHAR(reported_at, 'YYYY-MM-DD HH24:MI'), '. ',
         CASE 
-            WHEN mr."resolved_at" IS NOT NULL 
-            THEN CONCAT('Resolved on: ', TO_VARCHAR(mr."resolved_at", 'YYYY-MM-DD HH24:MI'), '.')
+            WHEN resolved_at IS NOT NULL 
+            THEN CONCAT('Resolved on: ', TO_VARCHAR(resolved_at, 'YYYY-MM-DD HH24:MI'), '.')
             ELSE 'Status: Open/Pending resolution.'
         END
     ) AS SEARCH_DESCRIPTION,
     
     -- Additional context for search results
-    sl."status" AS LIGHT_STATUS,
-    sl."wattage" AS WATTAGE,
-    n."name" AS NEIGHBORHOOD_NAME,
-    n."population" AS NEIGHBORHOOD_POPULATION,
-    ST_X(TRY_TO_GEOGRAPHY(sl."location")) AS LONGITUDE,
-    ST_Y(TRY_TO_GEOGRAPHY(sl."location")) AS LATITUDE,
+    light_status AS LIGHT_STATUS,
+    wattage AS WATTAGE,
+    neighborhood_name AS NEIGHBORHOOD_NAME,
+    neighborhood_population AS NEIGHBORHOOD_POPULATION,
+    longitude AS LONGITUDE,
+    latitude AS LATITUDE,
+    
+    -- Google Maps location URL
+    CASE 
+        WHEN geo_location IS NOT NULL 
+        THEN CONCAT('https://www.google.com/maps?q=', latitude, ',', longitude)
+        ELSE NULL 
+    END AS GOOGLE_MAPS_URL,
     
     -- Resolution metrics
     CASE 
-        WHEN mr."resolved_at" IS NOT NULL 
-        THEN DATEDIFF('hour', mr."reported_at", mr."resolved_at")
+        WHEN resolved_at IS NOT NULL 
+        THEN DATEDIFF('hour', reported_at, resolved_at)
         ELSE NULL 
     END AS RESOLUTION_HOURS,
     
     CASE 
-        WHEN mr."resolved_at" IS NULL THEN 'OPEN'
+        WHEN resolved_at IS NULL THEN 'OPEN'
         ELSE 'CLOSED'
     END AS REQUEST_STATUS
 
-FROM STREETLIGHTS_DEMO."streetlights"."maintenance_requests" mr
-LEFT JOIN STREETLIGHTS_DEMO."streetlights"."street_lights" sl ON mr."light_id" = sl."light_id"
-LEFT JOIN STREETLIGHTS_DEMO."streetlights"."neighborhoods" n ON sl."neighborhood_id" = n."neighborhood_id";
+FROM joined_data;
 
 -- Verify the view was created
 SELECT * FROM MAINTENANCE_SEARCHABLE LIMIT 5;
@@ -111,6 +172,7 @@ AS (
     WATTAGE,
     LONGITUDE,
     LATITUDE,
+    GOOGLE_MAPS_URL,
     RESOLUTION_HOURS
   FROM ANALYTICS.MAINTENANCE_SEARCHABLE
 );
