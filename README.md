@@ -1,8 +1,19 @@
-# PostGIS + Snowflake Openflow + Snowflake ML Demo
+# Street Lights AI Maintenance Demo
 
-## Street Lights Maintenance - Production-Ready Architecture
+## PostgreSQL/PostGIS → Snowflake Openflow → Snowflake Cortex Intelligence → ML FORECAST
 
-This demo showcases a production-ready architecture for managing smart city street lights, featuring PostGIS for operational spatial queries, Snowflake Openflow for CDC, and Snowflake ML for predictive maintenance.
+Complete demo showcasing modern data pipeline with PostgreSQL/PostGIS, Snowflake Openflow CDC, and Snowflake Intelligence (Cortex Search + Cortex Analyst + ML FORECAST).
+
+Features:
+• Real-time Change Data Capture from PostgreSQL to Snowflake
+• Semantic search on maintenance descriptions (Cortex Search)
+• Natural language analytics (Cortex Analyst)
+• ML-powered failure forecasting with budget/staffing recommendations
+• Interactive Streamlit dashboard with spatial visualizations
+• Production-ready architecture for smart city infrastructure
+
+Tech Stack: PostgreSQL/PostGIS, Snowflake Openflow, Cortex Intelligence, Streamlit, Folium
+Use Case: Predictive maintenance for 5,000 street lights in Bengaluru
 
 > **DISCLAIMER**: This project uses entirely fictitious data for demonstration and educational purposes. All company names, supplier names, contact information, and other data are computer-generated and do not represent real entities.
 
@@ -35,6 +46,7 @@ The quickstart covers:
 | **uv** | Python package manager | `curl -LsSf https://astral.sh/uv/install.sh \| sh` |
 
 > **Tip**: Use [~/.pgpass](https://www.postgresql.org/docs/current/libpq-pgpass.html) for secure Snowflake PostgreSQL credentials:
+>
 > ```
 > <host>:5432:postgres:snowflake_admin:<password>
 > ```
