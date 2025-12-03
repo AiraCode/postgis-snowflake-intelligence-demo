@@ -1,12 +1,31 @@
 # Snowflake Intelligence Questions
 
-Sample questions for use with Snowflake Intelligence after wiring the Cortex Search service.
+Sample questions for use with Snowflake Intelligence after wiring **both** Cortex Search and Cortex Analyst.
+
+This demo showcases the complementary power of:
+- **🔍 Cortex Search** → Semantic similarity queries ("Find X like Y")
+- **📊 Cortex Analyst** → Structured SQL analytics ("How many?", "Average of?")
 
 Copy and paste these natural language questions directly into the Snowflake Intelligence chat interface.
 
 ---
 
-## Category 1: Finding Issues
+## Quick Reference: Which Capability Handles What?
+
+| Question Type | Best Capability | Example |
+|--------------|-----------------|---------|
+| Find similar items | 🔍 Search | "Find issues like bulb burnout" |
+| Count/aggregate | 📊 Analyst | "How many lights are faulty?" |
+| Semantic matching | 🔍 Search | "Show me storm damage" |
+| Averages/sums | 📊 Analyst | "Average resolution time?" |
+| Text-based discovery | 🔍 Search | "Flickering lights near MG Road" |
+| Comparisons | 📊 Analyst | "Which neighborhood has most issues?" |
+
+---
+
+## Category 1: Finding Issues 🔍
+
+*Best handled by Cortex Search*
 
 - "Show me all street lights that are not working"
 - "Which lights have bulb failures?"
@@ -16,23 +35,27 @@ Copy and paste these natural language questions directly into the Snowflake Inte
 
 ---
 
-## Category 2: Troubleshooting & Diagnostics
+## Category 2: Troubleshooting & Diagnostics 🔍📊
 
-- "What are the most common issues reported?"
-- "Show me lights with recurring problems"
-- "Find similar issues to this flickering LED problem"
-- "Which lights have had multiple maintenance requests?"
-- "What issues happen during monsoon season?"
+*Mixed: Search for finding similar, Analyst for counts*
+
+- "What are the most common issues reported?" 📊
+- "Show me lights with recurring problems" 🔍
+- "Find similar issues to this flickering LED problem" 🔍
+- "Which lights have had multiple maintenance requests?" 📊
+- "What issues happen during monsoon season?" 📊
 
 ---
 
-## Category 3: Location-Based Queries
+## Category 3: Location-Based Queries 🔍📊
 
-- "Show me faulty lights near MG Road"
-- "Which neighborhoods have the most maintenance issues?"
-- "Find all open requests in the downtown area"
-- "What lights need repair in high-population areas?"
-- "Show me maintenance issues near the city center"
+*Search for finding, Analyst for aggregations*
+
+- "Show me faulty lights near MG Road" 🔍
+- "Which neighborhoods have the most maintenance issues?" 📊
+- "Find all open requests in the downtown area" 🔍
+- "What lights need repair in high-population areas?" 🔍
+- "Show me maintenance issues near the city center" 🔍
 
 ---
 
@@ -76,7 +99,9 @@ Copy and paste these natural language questions directly into the Snowflake Inte
 
 ---
 
-## Category 8: Analytics & Reporting
+## Category 8: Analytics & Reporting 📊
+
+*Best handled by Cortex Analyst*
 
 - "What's the average time to fix a bulb failure?"
 - "How many lights are currently not working?"
@@ -124,3 +149,84 @@ These questions combine multiple data sources:
 - "Which faulty lights have the longest wait time?"
 - "Show me weather damage in areas with frequent outages"
 - "Find repeated failures and their common causes"
+
+---
+
+## Cortex Analyst Specific Questions 📊
+
+These analytical questions work best with the semantic model:
+
+### Infrastructure Metrics
+- "How many street lights do we have by status?"
+- "What is the total power consumption by neighborhood?"
+- "Show me lights per neighborhood ranked by count"
+- "What's the average wattage across all lights?"
+
+### Resolution Analytics
+- "What is the average resolution time for each issue type?"
+- "Which issue types take longest to resolve?"
+- "How many requests are resolved vs still open?"
+- "What's the median resolution time this month?"
+
+### Weather & Risk
+- "What is the average failure risk by season?"
+- "How many lights have risk scores above 0.7?"
+- "Which season has the highest average rainfall?"
+- "Show me predicted failures for next 30 days"
+
+### Power Grid Analytics
+- "Which power grid zones have the most outages?"
+- "What's the average grid load by zone?"
+- "Correlate outage count with failure risk"
+
+### Supplier Performance
+- "What are the average response times by supplier?"
+- "How many suppliers by specialization?"
+- "Which suppliers cover the largest radius?"
+
+### Demographics
+- "How are lights distributed across urban vs rural areas?"
+- "What's the population per street light by neighborhood?"
+- "Show population density vs maintenance request count"
+
+### CDC Monitoring
+- "Show me records modified today via CDC"
+- "Which tables have the most recent changes?"
+- "How many records synced in the last hour?"
+
+---
+
+## Demo Flow: Search + Analyst Together
+
+For the best demo experience, show how both capabilities complement each other:
+
+### Scenario: Monsoon Preparation
+
+1. **📊 Analyst**: "What is the average failure risk by season?"
+   → See monsoon has highest risk (0.7-0.9)
+
+2. **🔍 Search**: "Find lights with water damage or flooding issues"
+   → Get specific maintenance records with rich descriptions
+
+3. **📊 Analyst**: "Which neighborhoods have the most maintenance issues?"
+   → Identify priority areas
+
+4. **🔍 Search**: "Show me similar issues to electrical wiring problems"
+   → Find related records for pattern analysis
+
+5. **📊 Analyst**: "What suppliers specialize in LED and have fastest response?"
+   → Identify best contractors for repairs
+
+### Scenario: Executive Dashboard
+
+1. **📊 Analyst**: "How many lights are operational vs faulty vs maintenance required?"
+   → Get status breakdown
+
+2. **📊 Analyst**: "What's the total power consumption by neighborhood?"
+   → Energy cost analysis
+
+3. **🔍 Search**: "Show me urgent repairs needed"
+   → Specific actionable items
+
+4. **📊 Analyst**: "Average resolution time trend by month"
+   → Performance tracking
