@@ -202,6 +202,7 @@ See `data/SCHEMA_REFERENCE.md` for complete schema reference.
 - **Cortex Search**: Semantic search on maintenance descriptions
 - **Cortex Analyst**: Structured analytics via YAML semantic model
 - Natural language queries for both search and analytics
+- Setup guide: [Getting Started with Snowflake Intelligence](https://www.snowflake.com/en/developers/guides/getting-started-with-snowflake-intelligence/)
 
 **Recommended Orchestration Instructions:**
 

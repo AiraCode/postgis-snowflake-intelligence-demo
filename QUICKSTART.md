@@ -241,6 +241,8 @@ SELECT COUNT(*) FROM STREETLIGHTS_DEMO."streetlights"."street_lights";
 
 ## Step 5: Snowflake Intelligence (Cortex Search + Analyst)
 
+**Reference**: [Getting Started with Snowflake Intelligence](https://www.snowflake.com/en/developers/guides/getting-started-with-snowflake-intelligence/)
+
 ### 5.1 Create Analytics Schema and Cortex Search
 
 ```bash
