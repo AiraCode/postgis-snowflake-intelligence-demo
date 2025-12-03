@@ -255,46 +255,6 @@ uv run generate-sample
 
 ---
 
-## Sample Queries
-
-### PostgreSQL: Find faulty lights within 1km
-
-```sql
-SELECT light_id, status,
-       ST_Distance(location::geography, 
-                   ST_MakePoint(77.5946, 12.9716)::geography) as distance_m
-FROM streetlights.street_lights
-WHERE status = 'faulty'
-  AND ST_DWithin(location::geography, 
-                 ST_MakePoint(77.5946, 12.9716)::geography, 1000);
-```
-
-### Snowflake: Semantic search for issues
-
-```sql
-SELECT * FROM TABLE(
-  ANALYTICS.MAINTENANCE_SEARCH!SEARCH(
-    query => 'flickering light electrical problem',
-    columns => ['SEARCH_DESCRIPTION'],
-    limit => 10
-  )
-);
-```
-
-### Snowflake: Weekly forecast with budget
-
-```sql
-SELECT
-    DATE_TRUNC('week', FORECAST_DATE)::DATE AS WEEK_START,
-    SUM(PREDICTED_FAILURES) AS TOTAL_FAILURES,
-    SUM(PREDICTED_FAILURES) * 1650 AS TOTAL_BUDGET_INR
-FROM ANALYTICS.BULB_REPLACEMENT_SCHEDULE
-GROUP BY DATE_TRUNC('week', FORECAST_DATE)
-ORDER BY WEEK_START;
-```
-
----
-
 ## Documentation
 
 | Document | Purpose |
