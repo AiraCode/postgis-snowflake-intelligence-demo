@@ -1,5 +1,5 @@
 -- =====================================================
--- Phase 8: Snowflake Cortex Analyst Setup
+-- Phase 11: Snowflake Cortex Analyst Setup
 -- Semantic Model for Structured Analytics
 -- =====================================================
 
@@ -29,11 +29,10 @@ CREATE STAGE IF NOT EXISTS SEMANTIC_MODELS
 -- =====================================================
 -- STEP 2: Upload Semantic Model
 -- =====================================================
--- Option A: Using SnowSQL CLI
+-- Option A: Using Snow CLI
 -- Run this from your terminal (not in Snowflake worksheet):
 --
---   snowsql -a <account> -u <user> -d STREETLIGHTS_DEMO -s ANALYTICS \
---     -q "PUT file://snowflake/streetlights_semantic_model.yaml @SEMANTIC_MODELS AUTO_COMPRESS=FALSE OVERWRITE=TRUE"
+--   snow stage copy ./snowflake/streetlights_semantic_model.yaml '@streetlights_demo.analytics.semantic_models'
 --
 -- Option B: Using Snowsight UI
 -- 1. Go to Data > Databases > STREETLIGHTS_DEMO > ANALYTICS > Stages > SEMANTIC_MODELS
@@ -129,9 +128,9 @@ FROM @SEMANTIC_MODELS/streetlights_semantic_model.yaml
 --    → Uses weather enrichment data
 
 -- =====================================================
--- PHASE 8 SUCCESS CHECKLIST
+-- PHASE 11 SUCCESS CHECKLIST
 -- =====================================================
--- Run these to verify Phase 8 is complete:
+-- Run these to verify Phase 11 is complete:
 --
 -- [ ] SEMANTIC_MODELS stage created
 -- [ ] streetlights_semantic_model.yaml uploaded
