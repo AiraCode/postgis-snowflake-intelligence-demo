@@ -12,7 +12,7 @@ Features:
 • Interactive Streamlit dashboard with spatial visualizations
 • Production-ready architecture for smart city infrastructure
 
-Tech Stack: PostgreSQL/PostGIS, Snowflake Openflow, Cortex Intelligence, Streamlit, Folium
+Tech Stack: PostgreSQL/PostGIS, Snowflake Openflow, Snowflake Intelligence, Streamlit, Folium
 Use Case: Predictive maintenance for 5,000 street lights in Bengaluru
 
 > **DISCLAIMER**: This project uses entirely fictitious data for demonstration and educational purposes. All company names, supplier names, contact information, and other data are computer-generated and do not represent real entities.
